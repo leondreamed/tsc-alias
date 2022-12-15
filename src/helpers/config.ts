@@ -25,9 +25,7 @@ import normalizePath = require('normalize-path');
  * @param {ReplaceTscAliasPathsOptions} options options that are used to prepare a config object.
  * @returns {IConfig} a promise of a IConfig object.
  */
-export function prepareConfig(
-  options: ReplaceTscAliasPathsOptions
-): IConfig {
+export function prepareConfig(options: ReplaceTscAliasPathsOptions): IConfig {
   const output = options.output ?? new Output(options.verbose, options.debug);
 
   const configFile = !options.configFile

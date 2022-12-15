@@ -63,9 +63,7 @@ export function importReplacers(
       // Importing default replacers.
       if (Object.keys(defaultReplacers).includes(replacer[0])) {
         config.output.debug('Loading default replacer:', replacer);
-        const replacerModule = require(
-          `../replacers/${replacer[0]}.replacer`
-        );
+        const replacerModule = require(`../replacers/${replacer[0]}.replacer`);
         config.replacers.push(replacerModule.default);
       }
 
