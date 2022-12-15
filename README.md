@@ -1,8 +1,10 @@
-# tsc-alias
+# tsc-alias-sync
+
+> **Note:** This package is a modification to the incredible [tsc-alias](https://github.com/justkey007) package by @justkey007, meant to be used in synchronous-only environments (such as an ESLint configuration file).
 
 Replace alias paths with relative paths after typescript compilation. You can add aliases that reference other projects outside your tsconfig.json project by providing a relative path to the baseUrl.
 
-[![npm version](https://badge.fury.io/js/tsc-alias.svg)](https://badge.fury.io/js/tsc-alias)
+[![npm version](https://badge.fury.io/js/tsc-alias-sync.svg)](https://badge.fury.io/js/tsc-alias-sync)
 [![License](https://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=FPRE4VERGHZ3E)
 
@@ -12,14 +14,14 @@ Replace alias paths with relative paths after typescript compilation. You can ad
 
 ## Getting Started
 
-First, install tsc-alias as devDependency using npm.
+First, install tsc-alias-sync as devDependency using npm.
 
 ```sh
-npm install -g tsc-alias
+npm install -g tsc-alias-sync
 ```
 
 ```
-npm install --save-dev tsc-alias
+npm install --save-dev tsc-alias-sync
 ```
 
 ## Add it to your build scripts in package.json
@@ -40,7 +42,7 @@ npm install --save-dev tsc-alias
 ## Issues
 If you have an issue, please create one. But, before:
 
-- try to check the [FAQ.](https://github.com/justkey007/tsc-alias/discussions/110) 
+- try to check the [FAQ.](https://github.com/justkey007/tsc-alias/discussions/110)
 - try to check if there exits alike issues.
 - try to run with `--debug` and check if config is correctly loaded and all sourcefiles are found.
 
