@@ -23,11 +23,11 @@ import normalizePath = require('normalize-path');
 /**
  * prepareConfig prepares a IConfig object for tsc-alias to be used.
  * @param {ReplaceTscAliasPathsOptions} options options that are used to prepare a config object.
- * @returns {Promise<IConfig>} a promise of a IConfig object.
+ * @returns {IConfig} a promise of a IConfig object.
  */
-export async function prepareConfig(
+export function prepareConfig(
   options: ReplaceTscAliasPathsOptions
-): Promise<IConfig> {
+): IConfig {
   const output = options.output ?? new Output(options.verbose, options.debug);
 
   const configFile = !options.configFile
@@ -99,7 +99,8 @@ export async function prepareConfig(
   output.debug('loaded full config:', config);
 
   // Import replacers.
-  await importReplacers(config, replacers, options.replacers);
+  importReplacers(config, replacers, options.replacers);
+
   return config;
 }
 

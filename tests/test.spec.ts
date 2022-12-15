@@ -99,7 +99,7 @@ it(`Import regex does not match edge cases from keywords in strings`, function (
   });
 });
 
-it('prepareSingleFileReplaceTscAliasPaths() works', async () => {
+it('prepareSingleFileReplaceTscAliasPaths() works', () => {
   const projectDir = join(projectsRoot, `project19`);
   const outPath = join(projectDir, 'dist');
   const basePath = join(projectDir, 'dist-base');
@@ -122,7 +122,7 @@ it('prepareSingleFileReplaceTscAliasPaths() works', async () => {
     resolveFullPaths: true
   };
 
-  const runFile = await prepareSingleFileReplaceTscAliasPaths(options);
+  const runFile = prepareSingleFileReplaceTscAliasPaths(options);
 
   // Finding files and changing alias paths
   const posixOutput = basePath.replace(/\\/g, '/');

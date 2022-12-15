@@ -5,7 +5,7 @@
  */
 
 /** */
-import { existsSync, promises as fsp } from 'fs';
+import * as fs from 'fs';
 import { Dir } from 'mylas';
 import { isAbsolute, join } from 'path';
 import { IConfig, ReplacerOptions } from '../interfaces';
@@ -18,7 +18,7 @@ import normalizePath = require('normalize-path');
  * @param {ReplacerOptions} replacers the tsc-alias replacer options.
  * @param {string[]} cmdReplacers array of filepaths to replacers from command-line.
  */
-export async function importReplacers(
+export function importReplacers(
   config: IConfig,
   replacers: ReplacerOptions,
   cmdReplacers?: string[]
@@ -58,12 +58,12 @@ export async function importReplacers(
 
   config.output.debug('Reading replacers config');
   const entries = Object.entries(merged);
-  for await (const replacer of entries) {
+  for (const replacer of entries) {
     if (replacer[1].enabled) {
       // Importing default replacers.
       if (Object.keys(defaultReplacers).includes(replacer[0])) {
         config.output.debug('Loading default replacer:', replacer);
-        const replacerModule = await import(
+        const replacerModule = require(
           `../replacers/${replacer[0]}.replacer`
         );
         config.replacers.push(replacerModule.default);
@@ -75,8 +75,8 @@ export async function importReplacers(
         continue; // When file is undefined don't try to import.
       }
       // Try to import replacer.
-      const tryImportReplacer = async (targetPath: string) => {
-        const replacerModule = await import(targetPath);
+      const tryImportReplacer = (targetPath: string) => {
+        const replacerModule = require(targetPath);
         config.output.debug('Imported replacerModule:', replacerModule);
         const replacerFunction = replacerModule.default;
         if (typeof replacerFunction == 'function') {
@@ -93,9 +93,9 @@ export async function importReplacers(
       const isRelativePath = !isAbsolute(file);
       const path = isRelativePath ? normalizePath(join(dir, file)) : file;
 
-      if (existsSync(path)) {
+      if (fs.existsSync(path)) {
         try {
-          await tryImportReplacer(path);
+          tryImportReplacer(path);
           config.output.debug('Imported replacer:', path);
           continue;
         } catch {}
@@ -105,7 +105,7 @@ export async function importReplacers(
       if (isRelativePath) {
         for (const targetPath of node_modules.map((v) => join(dir, v, file))) {
           try {
-            await tryImportReplacer(targetPath);
+            tryImportReplacer(targetPath);
             config.output.debug('Imported replacer:', targetPath);
             continue;
           } catch {}
@@ -125,20 +125,21 @@ export async function importReplacers(
  * @param {boolean} resolveFullPath if tsc-alias should resolve the full path
  * @returns {Promise<boolean>} if something has been replaced.
  */
-export async function replaceAlias(
+export function replaceAlias(
   config: IConfig,
   file: string,
   resolveFullPath?: boolean
-): Promise<boolean> {
+): boolean {
   config.output.debug('Starting to replace file:', file);
-  const code = await fsp.readFile(file, 'utf8');
+  const code = fs.readFileSync(file, 'utf8');
   const tempCode = replaceAliasString(config, file, code, resolveFullPath);
 
   if (code !== tempCode) {
     config.output.debug('replaced file with changes:', file);
-    await fsp.writeFile(file, tempCode, 'utf8');
+    fs.writeFileSync(file, tempCode, 'utf8');
     return true;
   }
+
   config.output.debug('replaced file without changes:', file);
   return false;
 }
