@@ -64,7 +64,7 @@ export function importReplacers(
       if (Object.keys(defaultReplacers).includes(replacer[0])) {
         config.output.debug('Loading default replacer:', replacer);
         const replacerModule = require(`../replacers/${replacer[0]}.replacer`);
-        config.replacers.push(replacerModule.default);
+        config.replacers.push(replacerModule.default ?? replacerModule);
       }
 
       const file = replacer[1]?.file;
@@ -76,7 +76,7 @@ export function importReplacers(
       const tryImportReplacer = (targetPath: string) => {
         const replacerModule = require(targetPath);
         config.output.debug('Imported replacerModule:', replacerModule);
-        const replacerFunction = replacerModule.default;
+        const replacerFunction = replacerModule.default ?? replacerModule;
         if (typeof replacerFunction == 'function') {
           config.replacers.push(replacerFunction);
           config.output.info(`Added replacer "${file}"`);

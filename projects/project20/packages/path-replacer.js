@@ -1,3 +1,3 @@
-exports.default = ({ orig, file, config }) => {
+module.exports = ({ orig, file, config }) => {
   return orig;
 };
